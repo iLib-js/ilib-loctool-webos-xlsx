@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en-KR" trgLang="ko-KR">
+ <file id="settings_f1" original="settings">
+  <group id="settings_g1" name="javascript">
+   <unit id="settings_1">
+    <segment>
+     <source>Date</source>
+     <target>날짜</target>
+    </segment>
+   </unit>
+  <unit id="settings_2">
+    <segment>
+     <source>Setting</source>
+     <target>설정</target>
+    </segment>
+   </unit>
+  <unit id="settings_3">
+    <segment>
+     <source>General</source>
+     <target>일반</target>
+    </segment>
+   </unit>
+  </group>
+ </file>
+</xliff>
