@@ -76,10 +76,11 @@ XlsxFileType.prototype.write = function(translations, locales) {
     // write out the resources
 };
 
-XlsxFileType.prototype.newFile = function(path) {
+XlsxFileType.prototype.newFile = function(path, options) {
     return new XlsxFile({
         project: this.project,
         pathName: path,
+        locale: (options && options.locale) || this.project.sourceLocale,
         type: this
     });
 };

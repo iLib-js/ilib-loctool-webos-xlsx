@@ -98,6 +98,34 @@ XlsxFile.cleanString = function(string) {
 };
 
 /**
+* Add a resource to this file. The locale of the resource
+* should correspond to the locale of the file, and the
+* context of the resource should match the context of
+* the file.
+*
+* @param {Resource} res a resource to add to this file
+*/
+XlsxFile.prototype.addResource = function(res) {
+    logger.trace("XlsxFile.addResource: " + JSON.stringify(res) + " to " + this.project.getProjectId() + ", " + this.locale + ", " + JSON.stringify(this.context));
+    var resLocale = res.getTargetLocale() || res.getSourceLocale();
+
+    if (res && res.getProject() === this.project.getProjectId() && resLocale === this.locale.getSpec()) {
+        logger.trace("correct project, context, and locale. Adding.");
+        this.set.add(res);
+    } else {
+        if (res) {
+            if (res.getProject() !== this.project.getProjectId()) {
+                logger.warn("Attempt to add a resource to a resource file with the incorrect project.");
+            } else {
+                logger.warn("Attempt to add a resource to a resource file with the incorrect locale. " + resLocale + " vs. " + this.locale.getSpec());
+            }
+        } else {
+            logger.warn("Attempt to add an undefined resource to a resource file.");
+        }
+    }
+}
+
+/**
  * Make a new key for the given string. This must correspond
  * exactly with the code in file so that the
  * resources match up. See the class IResourceBundle in
