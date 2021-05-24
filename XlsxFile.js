@@ -208,9 +208,35 @@ XlsxFile.prototype.getTranslationSet = function() {
     return this.set;
 }
 
+XlsxFile.prototype.writeContents = function(resources) {
+    var xlsxWrite = require("xlsx");
+    var contents = [];
+
+    for (var i=0; i < resources.length;i++) {
+        contents.push({
+            "index": i,
+            "id": resources[i].id,
+            "datatype": resources[i].datatype,
+            "targetLocale": resources[i].targetLocale,
+            "source": resources[i].source,
+            "target": resources[i].target,
+            "key": (resources[i].source !== resources[i].reskey) ?  resources[i].reskey : "",
+            "comment": resources[i].comment || ""
+        })
+    }
+
+    var ws = xlsxWrite.utils.json_to_sheet(contents);
+    var wb = xlsxWrite.utils.book_new();
+    xlsxWrite.utils.book_append_sheet(wb, ws, "Sheet1");
+    xlsxWrite.utils.book_append_sheet(wb, ws, "Sheet2");
+    xlsxWrite.writeFile(wb, this.pathName);
+    
+}
+
 
 XlsxFile.prototype.write = function() {
-    console.log("!!!")
+    var resources = this.set.resources;
+    this.writeContents(resources);
 };
 
 /**

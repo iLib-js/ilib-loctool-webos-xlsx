@@ -50,7 +50,8 @@
     "homepage": "https://github.com/iLib-js/ilib-loctool-webos-xlsx#readme",
     "dependencies": {
         "ilib": "^14.8.0",
-        "log4js": "^5.0.0"
+        "log4js": "^5.0.0",
+        "xlsx": "^0.17.0"
     },
     "devDependencies": {
         "loctool": "2.13.0",
