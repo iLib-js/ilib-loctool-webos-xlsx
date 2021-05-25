@@ -208,9 +208,10 @@ XlsxFile.prototype.getTranslationSet = function() {
     return this.set;
 }
 
-XlsxFile.prototype.writeContents = function(resources) {
+XlsxFile.prototype.writeContents = function(resources, locale) {
     var xlsxWrite = require("xlsx");
     var contents = [];
+    var fileName = (this.pathName !== ".") ? this.pathName : this.project.settings.id + "_" + locale + ".xlsx";
 
     for (var i=0; i < resources.length;i++) {
         contents.push({
@@ -229,14 +230,12 @@ XlsxFile.prototype.writeContents = function(resources) {
     var wb = xlsxWrite.utils.book_new();
     xlsxWrite.utils.book_append_sheet(wb, ws, "Sheet1");
     xlsxWrite.utils.book_append_sheet(wb, ws, "Sheet2");
-    xlsxWrite.writeFile(wb, this.pathName);
-    
+    xlsxWrite.writeFile(wb, fileName);
 }
 
-
-XlsxFile.prototype.write = function() {
-    var resources = this.set.resources;
-    this.writeContents(resources);
+XlsxFile.prototype.write = function(resources, locale) {
+    var resourcesContets = resources || this.set.resources;
+    this.writeContents(resourcesContets, locale);
 };
 
 /**

@@ -72,8 +72,23 @@ XlsxFileType.prototype.getResourceTypes = function() {
  * are no aggregated strings.
  */
 XlsxFileType.prototype.write = function(translations, locales) {
-    // templates are localized individually, so we don't have to
-    // write out the resources
+    var path = this.project.settings.targetDir;
+    var resources = translations.getAll();
+    this.resourceFiles = {};
+    var files = [];
+
+    for (var i=0; i < resources.length;i++) {
+        var locale = resources[i].targetLocale;
+        if (!this.resourceFiles[locale]) {
+            this.resourceFiles[locale] = [];
+        }
+        this.resourceFiles[locale].push(resources[i]);
+    }
+
+    for (var i=0; i < locales.length;i++) {
+        files[i] = this.newFile(path, {locale: locales[i]});
+        files[i].write(this.resourceFiles[locales[i]], locales[i]);
+    }
 };
 
 XlsxFileType.prototype.newFile = function(path, options) {
