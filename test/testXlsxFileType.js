@@ -30,7 +30,7 @@ var p = new CustomProject({
     locales:["en-GB"]
 });
 
-module.exports.XlsxFileType = {
+module.exports.xlsxFileType = {
     testXlsxFileTypeConstructor: function(test) {
         test.expect(1);
         var xft =new XlsxFileType(p);

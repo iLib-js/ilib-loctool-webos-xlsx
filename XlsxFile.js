@@ -20,7 +20,7 @@
 var fs = require("fs");
 var path = require("path");
 var LocaleMatcher = require("ilib/lib/LocaleMatcher.js");
-
+var xlsx = require("xlsx");
 var log4js = require("log4js");
 log4js.configure(path.dirname(module.filename) + '/log4js.json');
 var logger = log4js.getLogger("loctool.plugin.XlsxFile");
@@ -60,6 +60,7 @@ var XlsxFile = function(props) {
  * @returns {String} the unescaped string
  */
 XlsxFile.unescapeString = function(string) {
+    if (!string) return;
     var unescaped = string;
 
     unescaped = unescaped.
@@ -87,6 +88,7 @@ XlsxFile.unescapeString = function(string) {
  * @returns {String} the cleaned string
  */
 XlsxFile.cleanString = function(string) {
+    if (!string) return;
     var unescaped = XlsxFile.unescapeString(string);
 
     unescaped = unescaped.
@@ -141,6 +143,7 @@ XlsxFile.prototype.makeKey = function(source) {
     return XlsxFile.unescapeString(source);
 };
 
+
 /**
  * Parse the data string looking for the localizable strings and add them to the
  * project's translation set.
@@ -148,12 +151,30 @@ XlsxFile.prototype.makeKey = function(source) {
  */
 XlsxFile.prototype.parse = function(data) {
     logger.debug("Extracting strings from " + this.pathName);
+    
+    if (!data) return;
+    this.resourceIndex = 0;
 
-    this.parsedData = data;
-
-    if (typeof data !== "object") {
-        this.parsedData = JSON.parse(data);
+    for (var i=0; i < data.length;i++) {
+        var r = this.API.newResource({
+            resType: "string",
+            project: this.project.getProjectId(),
+            key: XlsxFile.unescapeString(data[i].key || data[i].source),
+            sourceLocale: data[i].sourceLocale || "en-KR",
+            source: XlsxFile.cleanString(data[i].source),
+            target: data[i].target,
+            targetLocale : data[i].targetLocale,
+            autoKey: true,
+            pathName: this.pathName,
+            state: "new",
+            comment: undefined,
+            datatype: data[i].datatype,
+            index: this.resourceIndex++
+        });
+        this.set.add(r);
     }
+    
+    /*this.rawData = data.Sheets;
 
     this.resourceIndex = 0;
     for (var property in this.schema) {
@@ -176,7 +197,7 @@ XlsxFile.prototype.parse = function(data) {
         } else {
             logger.debug("[" + property + "] property doesn't have localized `true` or not match the required data type.");
         }
-    }
+    }*/
 };
 
 /**
@@ -187,10 +208,15 @@ XlsxFile.prototype.extract = function() {
     logger.debug("Extracting strings from " + this.pathName);
     if (this.pathName) {
         var p = path.join(this.project.root, this.pathName);
+
         try {
-            var data = fs.readFileSync(p, "utf8");
+            //var data = fs.readFileSync(p, "utf8");
+            var data = xlsx.readFile(p);
             if (data) {
-                this.parse(data);
+                for (sheet in data.Sheets) {
+                    var dataJson = xlsx.utils.sheet_to_json(data.Sheets[sheet]);
+                    this.parse(dataJson);
+                }
             }
         } catch (e) {
             logger.warn("Could not read file: " + p);
