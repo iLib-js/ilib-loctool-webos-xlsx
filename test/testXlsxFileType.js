@@ -44,25 +44,25 @@ module.exports.xlsxFileType = {
         test.ok(xft.handles("app.xlsx"));
         test.done();
     },
-    testXlsxFileTypeHandlesJsonPath: function(test) {
+    testXlsxFileTypeHandlesxlsxPath: function(test) {
         test.expect(2);
         var xft =new XlsxFileType(p);
         test.ok(xft);
         test.ok(xft.handles("foo/bar/ko-KR.xlsx"));
         test.done();
     },
-    testXlsxFileTypeHandlesJonFalse: function(test) {
+    testXlsxFileTypeHandlesxlsxFalse: function(test) {
         test.expect(2);
         var xft =new XlsxFileType(p);
         test.ok(xft);
-        test.ok(!xft.handles("foo.js"));
+        test.ok(!xft.handles("foo.xlsxs"));
         test.done();
     },
     testXlsxFileTypeHandlesJonFalse1: function(test) {
         test.expect(2);
         var xft =new XlsxFileType(p);
         test.ok(xft);
-        test.ok(!xft.handles("app.csv"));
+        test.ok(!xft.handles("app.xliff"));
         test.done();
     }
 };

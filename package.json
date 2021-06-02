@@ -14,8 +14,7 @@
         "resources",
         "xlsx",
         "excel",
-        "translation",
-        "javascript"
+        "translation"
     ],
     "author": {
         "name": "Goun Lee",

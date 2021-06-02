@@ -159,18 +159,4 @@ XlsxFileType.prototype.getExtensions = function() {
     return this.extensions;
 };
 
-/**
-  * Called right before each project is closed
-  * Allows the file type class to do any last-minute clean-up or generate any final files
-  *
-  * Generate manifest file based on created resource files
-  */
-XlsxFileType.prototype.projectClose = function() {
-    var resourceRoot = path.join(this.project.root, this.project.getResourceDirs("xlsx")[0] || "resources");
-    var manifestFile = new XlsxFile({
-            project: this.project,
-            type: this.type
-        });
-};
-
 module.exports = XlsxFileType;

@@ -173,45 +173,18 @@ XlsxFile.prototype.parse = function(data) {
         });
         this.set.add(r);
     }
-    
-    /*this.rawData = data.Sheets;
-
-    this.resourceIndex = 0;
-    for (var property in this.schema) {
-        if ((this.parsedData[property]) &&
-            (this.schema[property].type === typeof this.parsedData[property])) {
-            var r = this.API.newResource({
-                resType: "string",
-                project: this.project.getProjectId(),
-                key: XlsxFile.unescapeString(this.parsedData[property]),
-                sourceLocale: this.project.sourceLocale,
-                source: XlsxFile.cleanString(this.parsedData[property]),
-                autoKey: true,
-                pathName: this.pathName,
-                state: "new",
-                comment: undefined,
-                datatype: this.datatype,
-                index: this.resourceIndex++
-            });
-            this.set.add(r);
-        } else {
-            logger.debug("[" + property + "] property doesn't have localized `true` or not match the required data type.");
-        }
-    }*/
 };
 
 /**
- * Extract all the localizable strings from the appinfo.json file and add them to the
+ * Extract all the localizable strings from the xlsx file and add them to the
  * project's translation set.
  */
 XlsxFile.prototype.extract = function() {
     logger.debug("Extracting strings from " + this.pathName);
     if (this.pathName) {
         var p = path.join(this.project.root, this.pathName);
-
         try {
-            //var data = fs.readFileSync(p, "utf8");
-            var data = xlsx.readFile(p);
+            var data = xlsx.readFileSync(p);
             if (data) {
                 for (sheet in data.Sheets) {
                     var dataJson = xlsx.utils.sheet_to_json(data.Sheets[sheet]);
@@ -244,8 +217,9 @@ XlsxFile.prototype.writeContents = function(resources, locale) {
             "index": i,
             "id": resources[i].id,
             "datatype": resources[i].datatype,
-            "targetLocale": resources[i].targetLocale,
+            "sourceLocale": resources[i].sourceLocale || "en-KR",
             "source": resources[i].source,
+            "targetLocale": resources[i].targetLocale,
             "target": resources[i].target,
             "key": (resources[i].source !== resources[i].reskey) ?  resources[i].reskey : "",
             "comment": resources[i].comment || ""
@@ -254,8 +228,7 @@ XlsxFile.prototype.writeContents = function(resources, locale) {
 
     var ws = xlsxWrite.utils.json_to_sheet(contents);
     var wb = xlsxWrite.utils.book_new();
-    xlsxWrite.utils.book_append_sheet(wb, ws, "Sheet1");
-    xlsxWrite.utils.book_append_sheet(wb, ws, "Sheet2");
+    xlsxWrite.utils.book_append_sheet(wb, ws, "Sheet");
     xlsxWrite.writeFile(wb, fileName);
 }
 

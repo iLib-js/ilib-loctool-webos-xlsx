@@ -30,7 +30,7 @@ var p = new CustomProject({
     type: "webos-web",
     sourceLocale: "en-US",
     resourceDirs: {
-        "xlsx": "localized_json"
+        "xlsx": "resources"
     },
     }, "./test/testfiles", {
     locales:["en-GB", "ko-KR"]
@@ -109,7 +109,36 @@ module.exports.xlsxFile = {
 
         test.done();
     },
-        testXlsxFiledefaultPath: function(test) {
+    testXlsxFileExtractFile2: function(test) {
+        test.expect(8);
+
+        var xf =new XlsxFile({
+            project: p,
+            pathName: "./ko-KR.xlsx",
+            type: xft
+        });
+        test.ok(xf);
+
+        // should read the file
+        xf.extract();
+        var set = xf.getTranslationSet();
+        test.equal(set.size(), 3);
+
+        var r = set.getBySource("General");
+        test.ok(r);
+        test.equal(r.getSource(), "General");
+        test.equal(r.getKey(), "General");
+
+        var r = set.getBy({
+            reskey: "General"
+        });
+        test.ok(r);
+        test.equal(r[0].getSource(), "General");
+        test.equal(r[0].getKey(), "General");
+
+        test.done();
+    },
+    testXlsxFiledefaultPath: function(test) {
         test.expect(2);
 
         var xf =new XlsxFile({
