@@ -6,7 +6,7 @@ This plugin is optimized for webOS platform
 ## Release Notes
 
 v1.0.0
-*
+* Implemented to parse and write properly xlsx files
 
 ## License
 

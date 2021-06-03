@@ -17,10 +17,8 @@
  * limitations under the License.
  */
 
-var fs = require("fs");
 var path = require("path");
 var LocaleMatcher = require("ilib/lib/LocaleMatcher.js");
-var xlsx = require("xlsx");
 var log4js = require("log4js");
 log4js.configure(path.dirname(module.filename) + '/log4js.json');
 var logger = log4js.getLogger("loctool.plugin.XlsxFile");
@@ -143,7 +141,6 @@ XlsxFile.prototype.makeKey = function(source) {
     return XlsxFile.unescapeString(source);
 };
 
-
 /**
  * Parse the data string looking for the localizable strings and add them to the
  * project's translation set.
@@ -207,12 +204,14 @@ XlsxFile.prototype.getTranslationSet = function() {
     return this.set;
 }
 
-XlsxFile.prototype.writeContents = function(resources, locale) {
+XlsxFile.prototype.writeContents = function(resources) {
     var xlsxWrite = require("xlsx");
     var contents = [];
-    var fileName = (this.pathName !== ".") ? this.pathName : this.project.settings.id + "_" + locale + ".xlsx";
 
+    var fileName = (this.pathName !== ".") ? this.pathName : this.project.settings.id + ".xlsx";
+    var sheetName;
     for (var i=0; i < resources.length;i++) {
+        sheetName = resources[i].targetLocale;
         contents.push({
             "index": i,
             "id": resources[i].id,
@@ -228,13 +227,13 @@ XlsxFile.prototype.writeContents = function(resources, locale) {
 
     var ws = xlsxWrite.utils.json_to_sheet(contents);
     var wb = xlsxWrite.utils.book_new();
-    xlsxWrite.utils.book_append_sheet(wb, ws, "Sheet");
+    xlsxWrite.utils.book_append_sheet(wb, ws, sheetName);
     xlsxWrite.writeFile(wb, fileName);
 }
 
-XlsxFile.prototype.write = function(resources, locale) {
-    var resourcesContets = resources || this.set.resources;
-    this.writeContents(resourcesContets, locale);
+XlsxFile.prototype.write = function() {
+    var resourcesContets = this.set.resources;
+    this.writeContents(resourcesContets);
 };
 
 /**
