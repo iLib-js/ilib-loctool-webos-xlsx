@@ -18,6 +18,7 @@
  */
 
 var path = require("path");
+var xlsx = require("xlsx");
 var LocaleMatcher = require("ilib/lib/LocaleMatcher.js");
 var log4js = require("log4js");
 log4js.configure(path.dirname(module.filename) + '/log4js.json');
