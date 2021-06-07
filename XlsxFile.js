@@ -1,5 +1,5 @@
 /*
- * XlsxFile.js - plugin to extract resources from a appinfo.json code file
+ * XlsxFile.js - plugin to extract resources from a xlsx file
  *
  * Copyright (c) 2021, JEDLSoft
  *
@@ -196,10 +196,10 @@ XlsxFile.prototype.extract = function() {
 };
 
 /**
- * Return the set of resources found in the current appinfo.json file.
+ * Return the set of resources found in the current xlsx file.
  *
  * @returns {TranslationSet} The set of resources found in the
- * current appinfo.json file.
+ * current xlsx file.
  */
 XlsxFile.prototype.getTranslationSet = function() {
     return this.set;

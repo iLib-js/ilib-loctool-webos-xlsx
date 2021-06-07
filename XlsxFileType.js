@@ -1,5 +1,5 @@
 /*
- * XlsxFileType.js - Represents a collection of appinfo.json files
+ * XlsxFileType.js - Represents a collection of xlsx files
  *
  * Copyright (c) 2021, JEDLSoft
  *
