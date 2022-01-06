@@ -48,13 +48,13 @@
     },
     "homepage": "https://github.com/iLib-js/ilib-loctool-webos-xlsx#readme",
     "dependencies": {
-        "ilib": "^14.8.0",
-        "log4js": "^5.0.0",
-        "xlsx": "^0.17.0"
+        "ilib": "^14.11.1",
+        "log4js": "^6.3.0",
+        "xlsx": "^0.17.4"
     },
     "devDependencies": {
         "assertextras": "^1.1.0",
-        "loctool": "2.13.0",
+        "loctool": "2.16.2",
         "nodeunit": "^0.11.3"
     }
 }
